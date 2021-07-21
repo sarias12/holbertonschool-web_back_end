@@ -4,7 +4,7 @@
 from typing import Tuple, Union
 
 
-def to_kv(k: str, v: Union[int, float]) -> Tuple[int, float]:
+def to_kv(k: str, v: Union[int, float]) -> Tuple[str, float]:
     """Function that takes a string and a number and return a tuple
 
     Args:
