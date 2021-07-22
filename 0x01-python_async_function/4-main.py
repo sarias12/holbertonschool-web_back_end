@@ -1,27 +1,9 @@
 #!/usr/bin/env python3
-""" 
-Tasks
-"""
+
 import asyncio
-from typing import List
-task_wait_random = __import__('3-tasks').task_wait_random
 
+task_wait_n = __import__('4-tasks').task_wait_n
 
-async def task_wait_n(n: int, max_delay: int) -> List[float]:
-    """[summary]
-
-    Args:
-        n (int)
-        max_delay (int)
-
-    Returns:
-        List[float]
-    """
-    delays: List[float] = []
-    all_delays: List[float] = []
-    for i in range(n):
-        delays.append(task_wait_random(max_delay))
-    for delay in asyncio.as_completed(delays):
-        earliest_result = await delay
-        all_delays.append(earliest_result)
-    return all_delays
+n = 5
+max_delay = 6
+print(asyncio.run(task_wait_n(n, max_delay)))
