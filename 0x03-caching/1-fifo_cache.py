@@ -29,7 +29,7 @@ class FIFOCache(BaseCaching):
                 self.items.append(key)
                 self.cache_data[key] = item
             else:
-                if( not key in self.cache_data):
+                if(key not in self.cache_data):
                     discard = self.items.pop(0)
                     self.items.append(key)
                     self.cache_data.pop(discard)
