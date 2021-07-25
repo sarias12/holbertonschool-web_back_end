@@ -16,7 +16,6 @@ class LIFOCache(BaseCaching):
         """
         super().__init__()
         self.items = []
-        self.last_item = 3
 
     def put(self, key, item):
         """Add item in the cache with LIFO Algorithm
@@ -25,20 +24,16 @@ class LIFOCache(BaseCaching):
             key (str): value for item
             item (str): item for dictionary
         """
-        if (key is not None and item is not None):
-            if (len(self.items) < self.MAX_ITEMS):
-                self.items.append(key)
-                #self.cache_data[key] = item
+        if key is not None and item is not None:
+            if key in self.cache_data:
+                self.cache_data[key] = item
             else:
-                if(key not in self.cache_data):
-                    if (self.last_item < 2):
-                        self.last_item = 3
-                    discard = self.items.pop(self.last_item)
-                    self.last_item -= 1
-                    self.items.append(key)
+                if len(self.cache_data) >= self.MAX_ITEMS:
+                    discard = self.items.pop()
                     self.cache_data.pop(discard)
-                    print('DISCARD: ' + discard)
-            self.cache_data[key] = item
+                    print("DISCARD:", discard)
+                self.cache_data[key] = item
+            self.items.append(key)
 
     def get(self, key):
         """Get a item by key
