@@ -5,6 +5,11 @@ from base_caching import BaseCaching
 
 
 class FIFOCache(BaseCaching):
+    """FIFO
+
+    Args:
+        BaseCaching (class): Parent class
+    """
 
     def __init__(self):
         """Constructor
