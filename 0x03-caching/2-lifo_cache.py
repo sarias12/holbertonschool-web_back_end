@@ -28,7 +28,7 @@ class LIFOCache(BaseCaching):
         if (key is not None and item is not None):
             if (len(self.items) < self.MAX_ITEMS):
                 self.items.append(key)
-                self.cache_data[key] = item
+                #self.cache_data[key] = item
             else:
                 if(key not in self.cache_data):
                     if (self.last_item < 2):
@@ -38,7 +38,7 @@ class LIFOCache(BaseCaching):
                     self.items.append(key)
                     self.cache_data.pop(discard)
                     print('DISCARD: ' + discard)
-                self.cache_data[key] = item
+            self.cache_data[key] = item
 
     def get(self, key):
         """Get a item by key
