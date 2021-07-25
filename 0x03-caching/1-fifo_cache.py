@@ -29,10 +29,11 @@ class FIFOCache(BaseCaching):
                 self.items.append(key)
                 self.cache_data[key] = item
             else:
-                discard = self.items.pop(0)
-                self.cache_data.pop(discard)
-                self.cache_data[key] = item
-                print('DISCARD: ' + discard)
+                if( not key in self.cache_data):
+                    discard = self.items.pop(0)
+                    self.cache_data.pop(discard)
+                    self.cache_data[key] = item
+                    print('DISCARD: ' + discard)
 
     def get(self, key):
         """Get a item by key
