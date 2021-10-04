@@ -1,21 +1,44 @@
 const fs = require('fs');
 
-const countStudents = (aPath) => {
+module.exports = function countStudents(path) {
+  let students = [];
+
   try {
-    let data = fs.readFileSync(aPath, 'utf8').toString().split('\n');
-    data = data.slice(1, data.length - 1);
-    console.log(`Number of students: ${data.length}`);
-    const subjects = {};
-    for (const row of data) {
-      const student = row.split(',');
-      if (!subjects[student[3]]) subjects[student[3]] = [];
-      subjects[student[3]].push(student[0]);
+    students = fs.readFileSync(path, { encoding: 'utf8', flag: 'r' });
+  } catch (err) {
+    throw Error('Cannot load the database');
+  }
+  students = students.split('\n');
+  const headers = students.shift().split(',');
+
+  const groupingStudentsField = {};
+  const studentsObjects = [];
+
+  students.forEach((student) => {
+    if (student) {
+      const studentInfo = student.split(',');
+      const studentObject = {};
+
+      headers.forEach((header, index) => {
+        studentObject[header] = studentInfo[index];
+        if (header === 'field') {
+          if (groupingStudentsField[studentInfo[index]]) {
+            groupingStudentsField[studentInfo[index]].push(studentObject.firstname);
+          } else {
+            groupingStudentsField[studentInfo[index]] = [studentObject.firstname];
+          }
+        }
+      });
+      studentsObjects.push(studentObject);
     }
-    for (const subject in subjects) {
-      if (subject) console.log(`Number of students in ${subject}: ${subjects[subject].length}. List: ${subjects[subject].join(', ')}`);
+  });
+
+  console.log(`Number of students: ${studentsObjects.length}`);
+
+  for (const groupStudent in groupingStudentsField) {
+    if (groupingStudentsField[groupStudent]) {
+      const listStudents = groupingStudentsField[groupStudent];
+      console.log(`Number of students in ${groupStudent}: ${listStudents.length}. List: ${listStudents.join(', ')}`);
     }
-  } catch (error) {
-    throw new Error('Cannot load the database');
   }
 };
-module.exports = countStudents;
